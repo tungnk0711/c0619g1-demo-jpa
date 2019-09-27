@@ -3,13 +3,13 @@ package com.codegym.model;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 public class ProductForm {
 
     private Long id;
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date createDate;
+    private String createDate;
     private MultipartFile image;
     private String name;
     private Double price;
@@ -20,7 +20,7 @@ public class ProductForm {
 
     public ProductForm() {}
 
-    public ProductForm(Date createDate, MultipartFile image, String name, Double price, Double quantity, String description, Integer active) {
+    public ProductForm(String createDate, MultipartFile image, String name, Double price, Double quantity, String description, Integer active) {
         this.createDate = createDate;
         this.image = image;
         this.name = name;
@@ -31,7 +31,7 @@ public class ProductForm {
 
     }
 
-    public ProductForm(Long id, Date createDate, MultipartFile image, String name, Double price, Double quantity, String description, Integer active) {
+    public ProductForm(Long id, String createDate, MultipartFile image, String name, Double price, Double quantity, String description, Integer active) {
         this.id = id;
         this.createDate = createDate;
         this.image = image;
@@ -50,11 +50,11 @@ public class ProductForm {
         this.id = id;
     }
 
-    public Date getCreateDate() {
+    public String getCreateDate() {
         return createDate;
     }
 
-    public void setCreateDate(Date createDate) {
+    public void setCreateDate(String createDate) {
         this.createDate = createDate;
     }
 

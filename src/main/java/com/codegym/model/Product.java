@@ -3,10 +3,28 @@ package com.codegym.model;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
 @Table(name = "products")
+@NamedQuery(
+        name = "findAllProducts",
+        query = "SELECT p FROM Product p WHERE p.id LIKE ?1")
+@NamedStoredProcedureQuery(
+        name = "addProduct",
+        procedureName = "sp_insert_product",
+        parameters = {
+                @StoredProcedureParameter(name = "active", mode = ParameterMode.IN, type = Integer.class),
+                @StoredProcedureParameter(name = "createDate", mode = ParameterMode.IN, type = java.sql.Timestamp.class),
+                @StoredProcedureParameter(name = "description", mode = ParameterMode.IN, type = String.class),
+                @StoredProcedureParameter(name = "image", mode = ParameterMode.IN, type = String.class),
+                @StoredProcedureParameter(name = "name", mode = ParameterMode.IN, type = String.class),
+                @StoredProcedureParameter(name = "price", mode = ParameterMode.IN, type = Double.class),
+                @StoredProcedureParameter(name = "quantity", mode = ParameterMode.IN, type = Double.class)
+
+        }
+)
 public class Product {
 
     @Id

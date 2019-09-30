@@ -31,7 +31,6 @@ public class ProductRepositoryImpl implements ProductRepository {
         java.text.SimpleDateFormat sdf =
                 new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-
         String createDate = sdf.format(product.getCreateDate());
 
 
@@ -52,10 +51,22 @@ public class ProductRepositoryImpl implements ProductRepository {
         //TypedQuery<Product> query = em.createQuery("select p from Product p", Product.class);
         //return query.getResultList();
 
-        List<Product> productList = em.createNamedQuery("findAllProducts")
+        /*List<Product> productList = em.createNamedQuery("findAllProducts")
                 .setParameter(1,Long.valueOf(2))
                 .getResultList();
+        return productList;*/
+
+        List<Product> productList = em.createNamedQuery("findProductsById")
+                .setParameter("id",Long.valueOf(2))
+                .getResultList();
         return productList;
+
+        /*StoredProcedureQuery getAllProductsQuery = em.createNamedStoredProcedureQuery("getAllProducts");
+        getAllProductsQuery.execute();
+
+        List<Product> productList = getAllProductsQuery.getResultList();
+
+        return  productList;*/
 
     }
 }

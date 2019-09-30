@@ -27,11 +27,9 @@ import java.util.Date;
 import java.util.List;
 
 @Controller
-@PropertySource("classpath:global_config_app.properties")
 public class ProductController {
 
-    @Autowired
-    Environment env;
+
 
     @Autowired
     private ProductService productService;
@@ -63,33 +61,7 @@ public class ProductController {
             System.out.println("Result Error Occured" + result.getAllErrors());
         }
 
-        // lay ten file
-        MultipartFile multipartFile = productform.getImage();
-        String fileName = multipartFile.getOriginalFilename();
-        String fileUpload = env.getProperty("file_upload").toString();
-
-        // luu file len server
-        try {
-            //multipartFile.transferTo(imageFile);
-            FileCopyUtils.copy(productform.getImage().getBytes(), new File(fileUpload + fileName));
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
-        // tham khảo: https://github.com/codegym-vn/spring-static-resources
-
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-        try {
-            Date lDate = formatter.parse(productform.getCreateDate());
-            // tao doi tuong de luu vao db
-            Product productObject = new Product(lDate, fileName, productform.getName(), productform.getPrice(), productform.getQuantity(), productform.getDescription(), productform.getActive());
-            // luu vao db
-            //productService.save(productObject);
-            //productService.save(productObject);
-            productService.add(productObject);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
+        productService.saveUseStoreProcedure(productform);
 
 
 

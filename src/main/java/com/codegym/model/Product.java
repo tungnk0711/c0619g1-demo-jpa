@@ -9,6 +9,9 @@ import java.util.Date;
 @Entity
 @Table(name = "products")
 @NamedQuery(
+        name = "findProductsById",
+        query = "SELECT p FROM Product p WHERE p.id LIKE :id")
+@NamedQuery(
         name = "findAllProducts",
         query = "SELECT p FROM Product p WHERE p.id LIKE ?1")
 @NamedStoredProcedureQuery(
@@ -24,6 +27,10 @@ import java.util.Date;
                 @StoredProcedureParameter(name = "quantity", mode = ParameterMode.IN, type = Double.class)
 
         }
+)
+@NamedStoredProcedureQuery(
+        name = "getAllProducts",
+        procedureName = "getAllProducts"
 )
 public class Product {
 

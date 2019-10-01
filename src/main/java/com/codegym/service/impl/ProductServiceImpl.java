@@ -3,10 +3,13 @@ package com.codegym.service.impl;
 import com.codegym.model.Product;
 import com.codegym.model.ProductForm;
 import com.codegym.repository.ProductRepository;
+import com.codegym.repository.ProductSpringDataRepository;
 import com.codegym.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -26,9 +29,16 @@ public class ProductServiceImpl implements ProductService {
     @Autowired
     private ProductRepository productRepository;
 
+    @Autowired
+    private ProductSpringDataRepository productSpringDataRepository;
+
     @Override
     public List<Product> findAll() {
-        return productRepository.findAll();
+
+        Iterable<Product> productList = productSpringDataRepository.findAll();
+        return (List<Product>)productList;
+
+        //return productRepository.findAll();
     }
 
     @Override
@@ -70,5 +80,15 @@ public class ProductServiceImpl implements ProductService {
             e.printStackTrace();
         }
 
+    }
+
+    @Override
+    public List<Product> findTop2ByNameContaining(String name) {
+        return productSpringDataRepository.findTop2ByNameContaining(name);
+    }
+
+    @Override
+    public Page<Product> findAllPaging(Pageable pageable) {
+        return productSpringDataRepository.findAll(pageable);
     }
 }

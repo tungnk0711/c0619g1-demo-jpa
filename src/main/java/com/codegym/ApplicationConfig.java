@@ -45,6 +45,7 @@ import java.util.Properties;
 @EnableSpringDataWebSupport
 @ComponentScan("com.codegym")
 @PropertySource("classpath:global_config_app.properties")
+@EnableJpaRepositories("com.codegym.repository")
 public class ApplicationConfig extends WebMvcConfigurerAdapter implements ApplicationContextAware {
 
     @Autowired

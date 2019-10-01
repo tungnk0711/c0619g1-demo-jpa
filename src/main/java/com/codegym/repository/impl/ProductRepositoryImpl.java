@@ -56,17 +56,17 @@ public class ProductRepositoryImpl implements ProductRepository {
                 .getResultList();
         return productList;*/
 
-        List<Product> productList = em.createNamedQuery("findProductsById")
+        /*List<Product> productList = em.createNamedQuery("findProductsById")
                 .setParameter("id",Long.valueOf(2))
                 .getResultList();
-        return productList;
+        return productList;*/
 
-        /*StoredProcedureQuery getAllProductsQuery = em.createNamedStoredProcedureQuery("getAllProducts");
+        StoredProcedureQuery getAllProductsQuery = em.createNamedStoredProcedureQuery("getAllProducts");
         getAllProductsQuery.execute();
 
         List<Product> productList = getAllProductsQuery.getResultList();
 
-        return  productList;*/
+        return  productList;
 
     }
 }

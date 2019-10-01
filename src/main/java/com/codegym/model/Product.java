@@ -30,6 +30,7 @@ import java.util.Date;
 )
 @NamedStoredProcedureQuery(
         name = "getAllProducts",
+        resultClasses = { Product.class },
         procedureName = "getAllProducts"
 )
 public class Product {

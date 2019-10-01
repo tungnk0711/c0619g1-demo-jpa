@@ -6,6 +6,9 @@ import com.codegym.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.validation.BindingResult;
@@ -17,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+
 import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
@@ -35,12 +39,16 @@ public class ProductController {
     private ProductService productService;
 
     @GetMapping("/products")
-    public ModelAndView showProducts() {
+    public ModelAndView showProducts(@PageableDefault(value = 2) Pageable pageable) {
 
-        List<Product> productList = productService.findAll();
+        Page<Product> products = productService.findAllPaging(pageable);
+
+        //Iterable<Product> productList = productService.findAll();
+
+        //List<Product> productsByName = productService.findTop2ByNameContaining("Iphone");
 
         ModelAndView modelAndView = new ModelAndView("/product/list");
-        modelAndView.addObject("products", productList);
+        modelAndView.addObject("products", products);
 
         return modelAndView;
     }

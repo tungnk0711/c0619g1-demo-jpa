@@ -1,17 +1,29 @@
 package com.codegym.model;
 
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.stereotype.Component;
+import org.springframework.validation.Errors;
+import org.springframework.validation.ValidationUtils;
+import org.springframework.validation.Validator;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 import java.time.LocalDate;
 import java.util.Date;
 
-public class ProductForm {
+@Component
+public class ProductForm implements Validator {
 
     private Long id;
     private String createDate;
     private MultipartFile image;
+
+    @NotEmpty
+    @Size(min = 2, max = 30)
     private String name;
+
     private Double price;
     private Double quantity;
     private String description;
@@ -106,5 +118,21 @@ public class ProductForm {
         this.active = active;
     }
 
+
+    @Override
+    public boolean supports(Class<?> clazz) {
+        return ProductForm.class.isAssignableFrom(clazz);
+    }
+
+    @Override
+    public void validate(Object target, Errors errors) {
+
+        ProductForm productForm = (ProductForm) target;
+        Double quantity = productForm.getQuantity();
+        ValidationUtils.rejectIfEmpty(errors, "quantity", "quantity.empty");
+        if (quantity <= 0 || quantity >= 10){
+            errors.rejectValue("quantity", "quantity.rank");
+        }
+    }
 }
 

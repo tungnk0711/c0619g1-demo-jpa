@@ -3,6 +3,9 @@ package com.codegym.controller;
 import com.codegym.model.Product;
 import com.codegym.model.ProductForm;
 import com.codegym.service.ProductService;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
@@ -23,8 +26,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -43,6 +45,56 @@ public class ProductController {
     @GetMapping("/products")
     public ModelAndView showProducts(@PageableDefault(value = 2) Pageable pageable) {
 
+        //demo write json object
+
+        JSONObject productDetail = new JSONObject();
+        productDetail.put("image", "samsunggalaxy.jpg");
+        productDetail.put("name", "Samsung Galaxy");
+        productDetail.put("price", "300");
+
+        JSONObject productObject = new JSONObject();
+        productObject.put("product", productDetail);
+
+        //Add product to list
+        JSONArray productList = new JSONArray();
+        productList.add(productObject);
+
+        //Write JSON file
+        try (FileWriter file = new FileWriter("/Users/nguyenkhanhtung/Documents/products.json")) {
+
+            file.write(productList.toJSONString());
+            file.flush();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        // demo read Json Object
+
+        //JSON parser object to parse read file
+        JSONParser jsonParser = new JSONParser();
+
+        try (FileReader reader = new FileReader("/Users/nguyenkhanhtung/Documents/products.json"))
+        {
+            //Read JSON file
+            Object obj = jsonParser.parse(reader);
+
+            JSONArray productList1 = (JSONArray) obj;
+            System.out.println(productList1);
+
+            //Iterate over employee array
+            productList1.forEach( p -> parseProductObject( (JSONObject) p ) );
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+
         Page<Product> products = productService.findAllPaging(pageable);
 
         //Iterable<Product> productList = productService.findAll();
@@ -53,6 +105,24 @@ public class ProductController {
         modelAndView.addObject("products", products);
 
         return modelAndView;
+    }
+
+    private static void parseProductObject(JSONObject product)
+    {
+        //Get product object within list
+        JSONObject productObject = (JSONObject) product.get("product");
+
+        //Get image
+        String image = (String) productObject.get("image");
+        System.out.println(image);
+
+        //Get name
+        String name = (String) productObject.get("name");
+        System.out.println(name);
+
+        //Get price
+        String price = (String) productObject.get("price");
+        System.out.println(price);
     }
 
     @GetMapping("/create-product")

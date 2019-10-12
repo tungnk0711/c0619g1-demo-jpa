@@ -17,6 +17,7 @@ import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -69,14 +70,14 @@ public class ProductServiceImpl implements ProductService {
 
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         try {
-            Date lDate = formatter.parse(productform.getCreateDate());
+            LocalDate lDate = LocalDate.parse(productform.getCreateDate());
             // tao doi tuong de luu vao db
             Product productObject = new Product(lDate, fileName, productform.getName(), productform.getPrice(), productform.getQuantity(), productform.getDescription(), productform.getActive());
             // luu vao db
             //productService.save(productObject);
-            //productService.save(productObject);
-            productRepository.add(productObject);
-        } catch (ParseException e) {
+            productRepository.save(productObject);
+            //productRepository.add(productObject);
+        } catch (Exception e) {
             e.printStackTrace();
         }
 

@@ -1,5 +1,7 @@
 package com.codegym.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -40,7 +42,8 @@ public class Product {
     private Long id;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date createDate;
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private LocalDate createDate;
     private String image;
     private String name;
     private Double price;
@@ -52,7 +55,7 @@ public class Product {
     public Product() {
     }
 
-    public Product(Date createDate, String image, String name, Double price, Double quantity, String description, Integer active) {
+    public Product(LocalDate createDate, String image, String name, Double price, Double quantity, String description, Integer active) {
         this.createDate = createDate;
         this.image = image;
         this.name = name;
@@ -62,7 +65,7 @@ public class Product {
         this.active = active;
     }
 
-    public Product(Long id, Date createDate, String image, String name, Double price, Double quantity, String description, Integer active) {
+    public Product(Long id, LocalDate createDate, String image, String name, Double price, Double quantity, String description, Integer active) {
         this.id = id;
         this.createDate = createDate;
         this.image = image;
@@ -81,11 +84,12 @@ public class Product {
         this.id = id;
     }
 
-    public Date getCreateDate() {
+    public LocalDate getCreateDate() {
         return createDate;
     }
 
-    public void setCreateDate(Date createDate) {
+    @JsonDeserialize(using = CustomDateDeserializer.class)
+    public void setCreateDate(LocalDate createDate) {
         this.createDate = createDate;
     }
 

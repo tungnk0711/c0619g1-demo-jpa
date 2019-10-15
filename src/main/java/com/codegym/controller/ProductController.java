@@ -59,6 +59,18 @@ public class ProductController {
         JSONArray productList = new JSONArray();
         productList.add(productObject);
 
+        JSONObject productDetail1 = new JSONObject();
+        productDetail.put("image", "samsunggalaxy.jpg");
+        productDetail.put("name", "Samsung Galaxy");
+        productDetail.put("price", "300");
+
+        JSONObject productObject1 = new JSONObject();
+        productObject.put("product", productDetail);
+
+        //Add product to list
+        productList.add(productObject);
+        productList.add(productObject1);
+
         //Write JSON file
         try (FileWriter file = new FileWriter("/Users/nguyenkhanhtung/Documents/products.json")) {
 
